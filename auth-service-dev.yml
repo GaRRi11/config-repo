@@ -1,16 +1,37 @@
 spring:
+  application:
+    name: auth-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/auth_db
-    username: root
-    password: root
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/yourdatabase}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:yourpassword}
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password: yourpassword
+  cloud:
+    config:
+      uri: http://localhost:8888  # Point to the Spring Cloud Config Server
+      label: main  # Optional: If you have different branches for different environments
+      profile: dev  # Optional: Specify profile like 'dev', 'prod', etc.
+      failFast: true  # If tru
   jpa:
     hibernate:
       ddl-auto: update
-  redis:
-    host: localhost
-    port: 6379
-  security:
-    oauth2:
-      client:
-        clientId: your-client-id
-        clientSecret: your-client-secret
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+server:
+  port: 8080
+
+
+
+
